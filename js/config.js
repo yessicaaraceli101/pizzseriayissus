@@ -4,7 +4,7 @@
    ========================================================= */
 window.CONFIG = {
   nombre: "Yissus Pizza",
-  subtitulo: "Pizzería · Delivery y retiro",
+  subtitulo: "SAPUCAI",
 
   // Número de WhatsApp con 595, SIN el 0, sin espacios ni guiones.
   // 0974 276 125  ->  595974276125
