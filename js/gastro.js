@@ -137,6 +137,48 @@
     return NOMBRES_CATEGORIA[t.toLowerCase()] || (t ? t.charAt(0).toUpperCase() + t.slice(1) : "Menú");
   }
 
+  /* La descripción del plato: primero por nombres conocidos y, si no
+     aparece, cualquier otro campo de texto del plato que no sea el nombre,
+     la categoría, la foto, un ID o un dato interno del sistema. */
+  const CAMPOS_DESCRIPCION = ["description", "descripcion", "desc", "detalle", "detail", "details",
+    "subtitle", "subtitulo", "notes", "nota", "notas", "ingredients", "ingredientes", "info",
+    "observacion", "observaciones", "comentario", "texto"];
+  const CAMPOS_IGNORADOS = new Set(["name", "nombre", "price", "precio", "category", "categoria",
+    "categoryname", "cat", "image", "imagen", "imageurl", "imagenurl", "foto", "img", "photo",
+    "empresaid", "sucursalid", "created_at", "createdat", "updated_at", "updatedat", "creado",
+    "id", "uid", "code", "codigo", "sku", "status", "estado", "tipo", "type", "moneda", "currency",
+    "emoji", "icon", "icono", "color", "usuario", "user", "createdby", "updatedby"]);
+
+  function textoValido(v, nombre) {
+    if (typeof v !== "string") return false;
+    const t = v.trim();
+    if (t.length < 2 || t.length > 300) return false;
+    if (!/[a-záéíóúñ]/i.test(t)) return false;                 // solo números o símbolos
+    if (/^(https?:|data:|gs:\/\/)/i.test(t)) return false;       // enlaces o imágenes
+    if (!/\s/.test(t) && t.length > 18) return false;          // parece un ID
+    if (t.toLowerCase() === String(nombre).trim().toLowerCase()) return false; // repite el nombre
+    return true;
+  }
+
+  const ignorado = k => CAMPOS_IGNORADOS.has(k.toLowerCase()) ||
+    /sucursal|empresa|usuario|user|cread|creat|updat|categ|imag|foto|precio|price/i.test(k);
+
+  function buscarDescripcion(d, nombre) {
+    for (const k of CAMPOS_DESCRIPCION) {
+      if (textoValido(d[k], nombre)) return d[k].trim();
+    }
+    for (const [k, v] of Object.entries(d)) {
+      const kk = k.toLowerCase();
+      if (ignorado(k)) continue;
+      if (/desc|nota|note|detal|sub|ingred|info/.test(kk) && textoValido(v, nombre)) return v.trim();
+    }
+    for (const [k, v] of Object.entries(d)) {
+      if (ignorado(k)) continue;
+      if (textoValido(v, nombre)) return v.trim();
+    }
+    return "";
+  }
+
   function normalizarProducto(id, d) {
     const nombre = primero(d.name, d.nombre, "");
     if (!nombre) return null;
@@ -147,8 +189,7 @@
       nombre: String(nombre),
       precio: precioEnGuaranies(primero(d.price, d.precio, 0)),
       categoria: nombreCategoria(primero(d.category, d.categoria, d.categoryName, d.cat, "")),
-      descripcion: String(primero(d.description, d.descripcion, d.desc, d.detalle, d.detail,
-        d.details, d.subtitle, d.subtitulo, d.notes, d.nota, d.ingredients, d.ingredientes, d.info, "")),
+      descripcion: buscarDescripcion(d, nombre),
       imagen: String(primero(d.image, d.imagen, d.imageUrl, d.imagenUrl, d.foto, d.img, "")),
       codigo: String(primero(d.code, d.codigo, d.sku, "")),
       disponible: !(d.disponible === false || d.available === false || d.agotado === true),
