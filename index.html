@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Yissus Pizza · Pedí por WhatsApp</title>
+  <meta name="description" content="Carta de Yissus Pizza. Armá tu pedido y mandalo por WhatsApp: delivery o retiro. 0974 276 125.">
+  <link rel="icon" href="img/icono-yissus.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a class="marca" href="index.html">
+      <img src="img/icono-yissus.png" alt="" width="48" height="48">
+      <span>
+        <strong id="marcaNombre">Yissus Pizza</strong>
+        <small id="marcaSub">Pizzería · Delivery y retiro</small>
+      </span>
+    </a>
+    <nav class="cabecera__acciones">
+      <a class="enlace-sutil" href="#carta">Carta</a>
+      <a class="enlace-sutil" href="#visitanos">Dónde estamos</a>
+      <a class="enlace-sutil" id="navIg" href="#" target="_blank" rel="noopener">Instagram</a>
+      <a class="boton boton--chico" id="btnAcceder" href="#" target="_blank" rel="noopener">Acceder</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="portada">
+    <div class="contenedor portada__grid">
+      <div class="portada__texto">
+        <p class="portada__desde">Delivery y retiro</p>
+        <h1>Pizza recién salida del horno</h1>
+        <p>Elegí tus pizzas de la carta, armá el pedido y mandalo por WhatsApp. Te la llevamos a tu casa o la pasás a buscar.</p>
+        <div class="portada__botones">
+          <a class="boton boton--lleno" href="#carta">Pedir ahora</a>
+          <a class="boton boton--contorno" id="btnLlamar" href="#">Llamar</a>
+        </div>
+        <p class="portada__tel">Pedidos al <a id="telHero" href="#">0974 276 125</a></p>
+      </div>
+      <div class="portada__sello">
+        <img src="img/logo-yissus.png" alt="Yissus Pizza" width="776" height="1000">
+      </div>
+    </div>
+  </section>
+
+  <section class="carta" id="carta">
+    <div class="contenedor">
+      <div class="carta__encabezado">
+        <h2>Nuestra carta</h2>
+        <p id="contador" aria-live="polite"></p>
+      </div>
+
+      <div class="filtros" role="search">
+        <label class="campo campo--buscar">
+          <span class="sr">Buscar</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input type="search" id="buscar" placeholder="Buscar en la carta">
+        </label>
+        <label class="campo">
+          <span class="sr">Categoría</span>
+          <select id="filtroCategoria"><option value="">Todas las categorías</option></select>
+        </label>
+        <label class="campo">
+          <span class="sr">Ordenar</span>
+          <select id="orden">
+            <option value="recientes">Más recientes</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="nombre">Nombre A-Z</option>
+          </select>
+        </label>
+        <label class="interruptor">
+          <input type="checkbox" id="soloDisponibles">
+          <span>Solo disponibles</span>
+        </label>
+      </div>
+
+      <div class="chips" id="chips" role="tablist" aria-label="Categorías"></div>
+
+      <div class="boletos" id="boletos"></div>
+      <div class="vacio" id="errorCarta" hidden>
+        <p>No pudimos cargar la carta en este momento. Probá recargar la página o pedinos por WhatsApp.</p>
+        <a class="boton boton--contorno" id="errorWa" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+      </div>
+      <div class="vacio" id="vacio" hidden>
+        <p>No hay nada en la carta que coincida con tu búsqueda.</p>
+        <button class="boton boton--contorno" id="limpiarFiltros" type="button">Ver toda la carta</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="visita" id="visitanos">
+    <div class="contenedor visita__grid">
+      <div>
+        <h2>Dónde estamos</h2>
+        <p class="visita__dir" id="direccion"></p>
+        <h3 id="horarios">Horarios</h3>
+        <ul class="horarios" id="listaHorarios"></ul>
+        <a class="boton boton--contorno" id="btnMapa" href="#" target="_blank" rel="noopener">Cómo llegar</a>
+      </div>
+      <div class="visita__mapa">
+        <iframe id="mapa" title="Mapa de Yissus Pizza" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor pie__grid">
+    <img src="img/logo-yissus.png" alt="" class="pie__logo">
+    <div>
+      <p><strong>Yissus Pizza</strong></p>
+      <p id="pieDireccion"></p>
+      <p>Pedidos: <a id="telPie" href="#">0974 276 125</a></p>
+      <p><a id="pieMapa" href="#" target="_blank" rel="noopener">Cómo llegar</a><span id="sepIg"> · <a id="pieIg" href="#" target="_blank" rel="noopener">Instagram</a></span> · <a id="pieWa" href="#" target="_blank" rel="noopener">WhatsApp</a></p>
+    </div>
+    <p class="pie__chico">© <span id="anio"></span> Yissus Pizza.</p>
+  </div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a class="wa-flotante" id="waFlotante" href="#" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.04 3C8.86 3 3.03 8.82 3.03 16c0 2.3.6 4.53 1.74 6.5L3 29l6.68-1.75A12.95 12.95 0 0 0 16.04 29C23.2 29 29 23.18 29 16S23.2 3 16.04 3Zm0 23.8c-1.98 0-3.92-.53-5.62-1.54l-.4-.24-3.96 1.04 1.06-3.86-.26-.4A10.77 10.77 0 0 1 5.2 16c0-5.97 4.86-10.83 10.84-10.83 5.97 0 10.8 4.86 10.8 10.83 0 5.98-4.83 10.8-10.8 10.8Zm5.94-8.1c-.33-.16-1.93-.95-2.23-1.06-.3-.11-.52-.16-.73.17-.22.32-.84 1.05-1.03 1.27-.19.22-.38.24-.7.08-.33-.16-1.38-.51-2.62-1.62-.97-.86-1.62-1.93-1.81-2.25-.19-.33-.02-.5.14-.66.15-.15.33-.38.49-.57.16-.19.22-.33.33-.54.1-.22.05-.41-.03-.57-.08-.16-.73-1.76-1-2.41-.27-.63-.54-.55-.73-.56h-.62c-.22 0-.57.08-.87.41-.3.32-1.14 1.11-1.14 2.71s1.17 3.15 1.33 3.36c.16.22 2.3 3.5 5.56 4.91.78.34 1.39.54 1.86.69.78.25 1.49.21 2.05.13.63-.09 1.93-.79 2.2-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.22-.62-.38Z"/></svg>
+  <span class="wa-flotante__texto">Pedí por WhatsApp</span>
+</a>
+
+<!-- Botón flotante del pedido -->
+<button class="pedido-flotante" id="abrirPedido" type="button" hidden>
+  <span>Tu pedido</span>
+  <span class="pedido-flotante__cant" id="cantFlotante">0</span>
+  <span id="totalFlotante"></span>
+</button>
+
+<!-- Panel del pedido -->
+<div class="velo" id="velo" hidden></div>
+<aside class="pedido" id="panelPedido" aria-hidden="true" aria-labelledby="tituloPedido" role="dialog">
+  <div class="pedido__cabeza">
+    <h2 id="tituloPedido">Tu pedido</h2>
+    <button class="cerrar" id="cerrarPedido" type="button" aria-label="Cerrar pedido">×</button>
+  </div>
+  <div class="pedido__listo" id="pedidoListo" hidden>
+    <h3>¡Pedido enviado!</h3>
+    <p>Tu código es <strong id="codigoListo"></strong>. Ya lo recibimos y te confirmamos por WhatsApp.</p>
+    <button class="boton boton--contorno" type="button" id="nuevoPedido">Hacer otro pedido</button>
+  </div>
+  <ul class="pedido__lista" id="listaPedido"></ul>
+  <p class="pedido__vacio" id="pedidoVacio">Todavía no agregaste nada. Elegí algo de la carta con «Agregar».</p>
+
+  <form class="pedido__datos" id="formPedido">
+    <fieldset>
+      <legend>¿Cómo lo querés?</legend>
+      <label class="opcion"><input type="radio" name="modalidad" value="Delivery" checked> <span>Delivery <small class="opcion__precio" id="precioDeliveryOpcion"></small></span></label>
+      <label class="opcion"><input type="radio" name="modalidad" value="Para retirar"> <span>Retiro en el local <small class="opcion__precio">Sin costo</small></span></label>
+    </fieldset>
+    <label class="campo-bloque">Tu nombre
+      <input type="text" id="nombreCliente" autocomplete="name" required>
+    </label>
+    <label class="campo-bloque">Teléfono
+      <input type="tel" id="telefonoCliente" autocomplete="tel" placeholder="0981 123 456">
+    </label>
+    <label class="campo-bloque" id="bloqueDireccion">Dirección de entrega
+      <textarea id="direccionCliente" rows="2" autocomplete="street-address" placeholder="Calle, número y una referencia" required></textarea>
+    </label>
+    <label class="campo-bloque">Nota (opcional)
+      <textarea id="nota" rows="2" placeholder="Ej.: sin cebolla, cambio para 100.000"></textarea>
+    </label>
+    <div class="pedido__envio" id="lineaEnvio">
+      <span>Delivery</span>
+      <span id="envioPedido">A confirmar</span>
+    </div>
+    <div class="pedido__total">
+      <span>Total</span>
+      <strong id="totalPedido">Gs. 0</strong>
+    </div>
+    <button class="boton boton--whatsapp" type="submit" id="enviarPedido">Enviar pedido por WhatsApp</button>
+    <button class="enlace-sutil vaciar" type="button" id="vaciarPedido">Vaciar pedido</button>
+  </form>
+</aside>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<!-- Firebase: conexión con el sistema Gastro -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script src="js/config.js"></script>
+<script src="data/productos.js"></script>
+<script src="js/comun.js"></script>
+<script src="js/gastro.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
