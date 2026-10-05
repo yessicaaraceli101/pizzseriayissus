@@ -287,8 +287,13 @@ h1, h2, h3 { font-family: var(--f-titulo); font-weight: 400; line-height: 1.08; 
 }
 .pedido-flotante__cant::before { content: "("; } .pedido-flotante__cant::after { content: ")"; }
 .pedido-flotante__cant { opacity: .85; }
+.pedido-flotante { white-space: nowrap; }
+@media (max-width: 440px) { #totalFlotante { display: none; } }
+.pedido-flotante::after { content: "›"; font-size: 1.5rem; line-height: 1; margin-left: .1rem; }
+.pedido-flotante.salto { animation: salto .5s ease; }
+@keyframes salto { 0%, 100% { transform: none; } 40% { transform: translateY(-8px) scale(1.04); } 70% { transform: translateY(0) scale(.98); } }
 #totalFlotante { border-left: 1px solid rgba(255, 255, 255, .4); padding-left: .65rem; }
-@media (max-width: 640px) { .pedido-flotante { right: calc(58px + 2rem); justify-content: center; } }
+@media (max-width: 640px) { .pedido-flotante { right: calc(58px + 2rem); justify-content: center; padding: 0 1rem; font-size: .95rem; gap: .45rem; } }
 
 .velo { position: fixed; inset: 0; background: rgba(30, 6, 4, .5); z-index: 40; }
 .pedido {
@@ -317,6 +322,8 @@ h1, h2, h3 { font-family: var(--f-titulo); font-weight: 400; line-height: 1.08; 
 .pedido__datos legend { font-weight: 700; margin-bottom: .4rem; }
 .opcion { display: flex; gap: .4rem; align-items: center; cursor: pointer; }
 .opcion input { accent-color: var(--rojo); width: 18px; height: 18px; }
+.opcion__precio { display: block; font-size: .85rem; font-weight: 600; color: var(--tinta-suave); }
+.pedido__datos fieldset { align-items: flex-start; }
 .campo-bloque { display: grid; gap: .3rem; font-weight: 600; }
 .campo-bloque input, .campo-bloque textarea {
   font: inherit; font-weight: 400; color: var(--tinta); background: #fff;

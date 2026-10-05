@@ -220,6 +220,9 @@
     if (item) item.cantidad++;
     else pedido.push({ clave, id: p.id, nombre: p.nombre, opcion: o ? o.nombre : "", precio: o ? o.precio : p.precio, cantidad: 1 });
     pintarPedido();
+    // Pequeño salto del botón para que se note dónde está el pedido
+    const flot = $("#abrirPedido");
+    flot.classList.remove("salto"); void flot.offsetWidth; flot.classList.add("salto");
     avisar(`Agregaste ${p.nombre}${o ? " (" + o.nombre + ")" : ""}`);
   }
 
