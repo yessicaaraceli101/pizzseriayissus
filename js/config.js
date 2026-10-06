@@ -21,6 +21,13 @@ window.CONFIG = {
   // Costo del delivery en Gs. Con 0 se muestra "A confirmar".
   costoDelivery: 5000,
 
+  // Datos para pagar por transferencia (se ven al elegir "Transferencia").
+  transferencia: {
+    alias: "7163327",
+    titular: "JESUS BALBUENA",
+    banco: "EKO FAMILIAR"
+  },
+
   // Horarios (formato 24 h). Poné null el día que está cerrado.
   horarios: {
     lunes:     null,
@@ -53,10 +60,7 @@ window.CONFIG = {
     // Empresa de Yissus Pizza en Gastro (Firestore > empresas)
     empresaId: "pizzeria-yissus",
 
-    // ⚠️ OBLIGATORIO: ID de la sucursal de la pizzería.
-    // Está en Firestore > empresas > pizzeria-yissus > sucursales.
-    // Mientras diga PONER_..., la web muestra la carta de ejemplo
-    // y los pedidos solo salen por WhatsApp.
+    // ID de la sucursal (Firestore > empresas > pizzeria-yissus > sucursales)
     sucursalId: "sapucai",
 
     // Dirección del sistema Gastro (botón "Acceder"). Vacío lo oculta.

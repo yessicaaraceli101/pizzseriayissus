@@ -303,12 +303,16 @@
   /* ---------- Método de pago ---------- */
   const T = C.transferencia || {};
   const aliasListo = T.alias && !String(T.alias).startsWith("PONER_");
-  $("#aliasTransferencia").textContent = aliasListo ? T.alias : "xxx";
+  // Si el alias no está en config.js (por ejemplo, porque está escrito
+  // directo en index.html), esta fila no se muestra.
+  $("#aliasTransferencia").textContent = aliasListo ? `Alias: ${T.alias}` : "";
   $("#copiarAlias").hidden = !aliasListo;
-  $("#datosTransferencia").textContent = [
-    T.titular && !String(T.titular).startsWith("PONER_") ? `Titular: ${T.titular}` : "",
-    T.banco && !String(T.banco).startsWith("PONER_") ? `Banco: ${T.banco}` : ""
-  ].filter(Boolean).join(" · ");
+  document.querySelector(".transferencia__alias").hidden = !aliasListo;
+  // Titular y banco, cada uno en su propia línea
+  $("#datosTransferencia").innerHTML = [T.titular, T.banco]
+    .filter(v => v && !String(v).startsWith("PONER_"))
+    .map(v => esc(v))
+    .join("<br>");
 
   const metodoPago = () => document.querySelector('input[name="pago"]:checked').value;
   function actualizarPago() {
