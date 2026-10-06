@@ -25,8 +25,8 @@
     <nav class="cabecera__acciones">
       <a class="enlace-sutil" href="#carta">Carta</a>
       <a class="enlace-sutil" href="#visitanos">Dónde estamos</a>
-      <a class="enlace-sutil" id="navIg" href="#" target="_blank" rel="noopener">Instagram</a>
-      <a class="boton boton--chico" id="btnAcceder" href="#" target="_blank" rel="noopener">Acceder</a>
+      <a class="enlace-sutil" id="navIg" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+      <a class="boton boton--chico" id="btnAcceder" href="#" target="_blank" rel="noopener" hidden>Acceder</a>
     </nav>
   </div>
 </header>
@@ -45,7 +45,7 @@
         <p class="portada__tel">Pedidos al <a id="telHero" href="#">0974 276 125</a></p>
       </div>
       <div class="portada__sello">
-        <img src="img/logo-yissus.png" alt="Yissus Pizza" width="776" height="1000">
+        <img src="img/logo-yissus.png" alt="Yissus Pizza" width="620" height="800" fetchpriority="high">
       </div>
     </div>
   </section>
@@ -119,7 +119,7 @@
       <p><strong>Yissus Pizza</strong></p>
       <p id="pieDireccion"></p>
       <p>Pedidos: <a id="telPie" href="#">0974 276 125</a></p>
-      <p><a id="pieMapa" href="#" target="_blank" rel="noopener">Cómo llegar</a><span id="sepIg"> · <a id="pieIg" href="#" target="_blank" rel="noopener">Instagram</a></span> · <a id="pieWa" href="#" target="_blank" rel="noopener">WhatsApp</a></p>
+      <p><a id="pieMapa" href="#" target="_blank" rel="noopener">Cómo llegar</a><span id="sepIg" hidden> · <a id="pieIg" href="#" target="_blank" rel="noopener">Instagram</a></span> · <a id="pieWa" href="#" target="_blank" rel="noopener">WhatsApp</a></p>
     </div>
     <p class="pie__chico">© <span id="anio"></span> Yissus Pizza.</p>
   </div>
@@ -168,8 +168,22 @@
     <label class="campo-bloque" id="bloqueDireccion">Dirección de entrega
       <textarea id="direccionCliente" rows="2" autocomplete="street-address" placeholder="Calle, número y una referencia" required></textarea>
     </label>
+    <fieldset class="pago">
+      <legend>Método de pago</legend>
+      <label class="opcion"><input type="radio" name="pago" value="Efectivo" checked> Efectivo</label>
+      <label class="opcion"><input type="radio" name="pago" value="Transferencia"> Transferencia</label>
+    </fieldset>
+    <div class="transferencia" id="bloqueTransferencia" hidden>
+      <p class="transferencia__titulo">Transferí a este alias</p>
+      <div class="transferencia__alias">
+        <strong id="aliasTransferencia"></strong>
+        <button type="button" class="boton boton--chico" id="copiarAlias">Copiar alias</button>
+      </div>
+      <p class="transferencia__datos" id="datosTransferencia"></p>
+      <p class="transferencia__nota">Después de enviar el pedido, mandanos el comprobante por WhatsApp.</p>
+    </div>
     <label class="campo-bloque">Nota (opcional)
-      <textarea id="nota" rows="2" placeholder="Ej.: sin cebolla, cambio para 100.000"></textarea>
+      <textarea id="nota" rows="2" placeholder="Ej.: sin cebolla, bien cocida"></textarea>
     </label>
     <div class="pedido__envio" id="lineaEnvio">
       <span>Delivery</span>

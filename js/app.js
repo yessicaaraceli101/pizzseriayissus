@@ -11,15 +11,17 @@
   $("#marcaSub").textContent = C.subtitulo;
   $("#direccion").textContent = C.direccion;
   $("#pieDireccion").textContent = C.direccion;
-  if (C.instagram) { $("#navIg").href = C.instagram; $("#pieIg").href = C.instagram; }
-  else { $("#navIg").hidden = true; $("#sepIg").hidden = true; }
+  // Instagram y "Acceder" empiezan ocultos y solo se muestran si están configurados
+  if (C.instagram) {
+    $("#navIg").href = C.instagram; $("#pieIg").href = C.instagram;
+    $("#navIg").hidden = false; $("#sepIg").hidden = false;
+  }
   const tel = C.telefonoVisible || "";
   const telLink = "tel:+" + C.whatsapp;
   ["#telHero", "#telPie"].forEach(s => { $(s).textContent = tel; $(s).href = telLink; });
   $("#btnLlamar").href = telLink;
   const urlSistema = (C.gastro && C.gastro.urlSistema) || "";
-  if (urlSistema) $("#btnAcceder").href = urlSistema;
-  else $("#btnAcceder").hidden = true;
+  if (urlSistema) { $("#btnAcceder").href = urlSistema; $("#btnAcceder").hidden = false; }
   $("#btnMapa").href = C.mapa;
   $("#mapa").src = "https://maps.google.com/maps?q=" + encodeURIComponent(C.mapaBusqueda || "Estación de Sapucai, Paraguay") + "&z=16&output=embed";
   $("#waFlotante").href = `https://wa.me/${C.whatsapp}?text=${encodeURIComponent("¡Hola, " + C.nombre + "! Quiero hacer un pedido.")}`;
@@ -298,6 +300,37 @@
   }
   document.querySelectorAll('input[name="modalidad"]').forEach(r => r.addEventListener("change", actualizarModalidad));
 
+  /* ---------- Método de pago ---------- */
+  const T = C.transferencia || {};
+  const aliasListo = T.alias && !String(T.alias).startsWith("PONER_");
+  $("#aliasTransferencia").textContent = aliasListo ? T.alias : "xxx";
+  $("#copiarAlias").hidden = !aliasListo;
+  $("#datosTransferencia").textContent = [
+    T.titular && !String(T.titular).startsWith("PONER_") ? `Titular: ${T.titular}` : "",
+    T.banco && !String(T.banco).startsWith("PONER_") ? `Banco: ${T.banco}` : ""
+  ].filter(Boolean).join(" · ");
+
+  const metodoPago = () => document.querySelector('input[name="pago"]:checked').value;
+  function actualizarPago() {
+    const transf = metodoPago() === "Transferencia";
+    $("#bloqueTransferencia").hidden = !transf;
+  }
+  document.querySelectorAll('input[name="pago"]').forEach(r => r.addEventListener("change", actualizarPago));
+
+  $("#copiarAlias").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(T.alias);
+    } catch (e) {
+      // Navegadores viejos: copiamos con un campo temporal
+      const t = document.createElement("textarea");
+      t.value = T.alias; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); } catch (_) {}
+      t.remove();
+    }
+    $("#copiarAlias").textContent = "¡Copiado!";
+    setTimeout(() => { $("#copiarAlias").textContent = "Copiar alias"; }, 1600);
+  });
+
   // El costo del delivery se ve junto a la opción, aunque esté marcado Retiro
   $("#precioDeliveryOpcion").textContent = Number(C.costoDelivery) > 0
     ? `+ ${gs(C.costoDelivery)}` : "Costo a confirmar";
@@ -310,6 +343,10 @@
     const direccion = modalidad === "Delivery" ? $("#direccionCliente").value.trim() : "";
     if (modalidad === "Delivery" && !direccion) { $("#direccionCliente").focus(); return; }
     const envio = envioActual();
+    const pago = metodoPago();
+    const textoPago = pago === "Transferencia"
+      ? `Transferencia${aliasListo ? " (alias " + T.alias + ")" : ""}`
+      : "Efectivo";
     const telefono = $("#telefonoCliente").value.trim();
     const nota = $("#nota").value.trim();
     const boton = $("#enviarPedido");
@@ -322,7 +359,7 @@
     boton.textContent = "Enviando pedido…";
 
     const codigo = window.Gastro
-      ? await window.Gastro.enviarPedido({ nombre, telefono, modalidad, direccion, envio, nota, items: pedido, total: total() })
+      ? await window.Gastro.enviarPedido({ nombre, telefono, modalidad, direccion, envio, pago, textoPago, nota, items: pedido, total: total() })
       : null;
 
     const lineas = pedido.map(i =>
@@ -335,6 +372,7 @@
       modalidad === "Delivery" ? `Delivery: ${envio ? gs(envio) : "a confirmar"}` : null,
       `*Total: ${gs(total() + envio)}*`,
       `Modalidad: ${modalidad}`,
+      `Pago: ${textoPago}`,
       direccion ? `Dirección: ${direccion}` : null,
       `Nombre: ${nombre}`,
       telefono ? `Teléfono: ${telefono}` : null,
@@ -363,6 +401,7 @@
     $("#pedidoListo").hidden = true;
     $("#formPedido").reset();
     actualizarModalidad();
+    actualizarPago();
     cerrarPedido();
   });
 
